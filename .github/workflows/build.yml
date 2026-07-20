@@ -1,0 +1,65 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - '*'
+    paths-ignore:
+      - '**.md'
+      - 'routines/**'
+      - 'LICENSE'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'routines/**'
+      - 'LICENSE'
+  workflow_dispatch:
+
+# Only keep the newest run per branch/PR; cancel superseded ones to save minutes.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: idf.py build (esp32s3)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # components/ is git-cloned by fetch_repos.py and managed_components/ by the
+      # IDF component manager — both are .gitignore'd, so cache them to avoid
+      # re-cloning every run. Keyed on the files that decide their contents.
+      - name: Cache fetched dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            components
+            managed_components
+          key: idf-deps-${{ hashFiles('repos.json', 'dependencies.lock', 'main/idf_component.yml') }}
+          restore-keys: |
+            idf-deps-
+
+      # Runs inside the official ESP-IDF Docker image. fetch_repos.py must run
+      # first (it clones components/ and applies patches/); the safe.directory
+      # line avoids git's "dubious ownership" error on the mounted workspace.
+      # If the v5.5.4 image tag is ever unavailable, use release-v5.5 instead.
+      - name: Build firmware
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.5.4
+          target: esp32s3
+          path: '.'
+          command: git config --global --add safe.directory '*' && python3 fetch_repos.py && idf.py build
+
+      - name: Upload firmware artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            build/StopWatch-UserDemo.bin
+            build/bootloader/bootloader.bin
+            build/partition_table/partition-table.bin
+            build/flasher_args.json
