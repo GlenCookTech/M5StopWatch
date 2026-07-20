@@ -3,6 +3,12 @@
 #
 CONFIG_IDF_TARGET="esp32s3"
 CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+# --- Aqua Timer: HTTPS to raw.githubusercontent.com. These default to y in IDF
+# --- 5.5 but save-defconfig omits defaults, so pin them to document the need.
+# --- (Re-running idf.py save-defconfig will drop this block.)
+CONFIG_MBEDTLS_CERTIFICATE_BUNDLE=y
+CONFIG_MBEDTLS_CERTIFICATE_BUNDLE_DEFAULT_FULL=y
+CONFIG_ESP_TLS_USING_MBEDTLS=y
 CONFIG_PARTITION_TABLE_CUSTOM=y
 CONFIG_SPIRAM=y
 CONFIG_SPIRAM_MODE_OCT=y
