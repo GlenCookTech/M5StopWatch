@@ -52,9 +52,17 @@ RUN_BUILD=1
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --no-build)      RUN_BUILD=0; shift ;;
-        --targets)       IDF_TARGETS="$2"; shift 2 ;;
-        --idf-version)   IDF_VERSION="$2"; shift 2 ;;
+        --no-build) RUN_BUILD=0; shift ;;
+        --targets)
+            [[ $# -ge 2 ]] || die "--targets requires a value (e.g. esp32s3,esp32)"
+            IDF_TARGETS="$2"
+            shift 2
+            ;;
+        --idf-version)
+            [[ $# -ge 2 ]] || die "--idf-version requires a value (e.g. v5.5.4)"
+            IDF_VERSION="$2"
+            shift 2
+            ;;
         -h|--help)       sed -n '7,26s/^# \?//p' "${BASH_SOURCE[0]}"; exit 0 ;;
         *)               echo "Unknown option: $1 (try --help)" >&2; exit 2 ;;
     esac
