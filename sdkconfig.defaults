@@ -1,18 +1,19 @@
-# This file was generated using idf.py save-defconfig. It can be edited manually.
-# Espressif IoT Development Framework (ESP-IDF) 5.5.4 Project Minimal Configuration
+# Shared defaults for all boards. Target-specific settings live in
+# sdkconfig.defaults.esp32 (M5Paper) and sdkconfig.defaults.esp32s3 (StopWatch);
+# ESP-IDF stacks sdkconfig.defaults.<target> on top of this file automatically.
+# Hand-curated — do NOT regenerate with `idf.py save-defconfig`, it would merge
+# the per-target files back into one.
 #
+# CONFIG_IDF_TARGET stays esp32s3 so a bare `idf.py build` means the watch.
 CONFIG_IDF_TARGET="esp32s3"
 CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
 # --- Aqua Timer: HTTPS to raw.githubusercontent.com. These default to y in IDF
 # --- 5.5 but save-defconfig omits defaults, so pin them to document the need.
-# --- (Re-running idf.py save-defconfig will drop this block.)
 CONFIG_MBEDTLS_CERTIFICATE_BUNDLE=y
 CONFIG_MBEDTLS_CERTIFICATE_BUNDLE_DEFAULT_FULL=y
 CONFIG_ESP_TLS_USING_MBEDTLS=y
 CONFIG_PARTITION_TABLE_CUSTOM=y
 CONFIG_SPIRAM=y
-CONFIG_SPIRAM_MODE_OCT=y
-CONFIG_SPIRAM_SPEED_80M=y
 CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
 CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
 CONFIG_FATFS_LFN_HEAP=y
@@ -20,7 +21,6 @@ CONFIG_FREERTOS_HZ=1000
 CONFIG_LV_USE_CLIB_MALLOC=y
 CONFIG_LV_USE_CLIB_STRING=y
 CONFIG_LV_USE_CLIB_SPRINTF=y
-CONFIG_LV_CACHE_DEF_SIZE=1048576
 CONFIG_LV_IMAGE_HEADER_CACHE_DEF_CNT=2
 CONFIG_LV_FONT_MONTSERRAT_10=y
 CONFIG_LV_FONT_MONTSERRAT_16=y
@@ -31,8 +31,3 @@ CONFIG_LV_FONT_MONTSERRAT_36=y
 CONFIG_LV_USE_FS_STDIO=y
 CONFIG_LV_FS_STDIO_LETTER=65
 CONFIG_LV_FS_STDIO_CACHE_SIZE=1048576
-CONFIG_LV_USE_LODEPNG=y
-CONFIG_LV_USE_TJPGD=y
-CONFIG_LV_USE_DEMO_BENCHMARK=y
-CONFIG_LV_USE_DEMO_STRESS=y
-CONFIG_LV_USE_DEMO_SMARTWATCH=y

@@ -1,0 +1,16 @@
+# M5Paper v1.1 (ESP32): quad PSRAM is the only mode, so no SPIRAM_MODE line.
+CONFIG_SPIRAM_SPEED_80M=y
+# Default-y on esp32 but load-bearing for stability with PSRAM; pin to document.
+CONFIG_SPIRAM_CACHE_WORKAROUND=y
+# The esp32 has much less IRAM than the S3 and the PSRAM cache workaround
+# inflates IRAM code; without these the image overflows iram0 at link time.
+CONFIG_COMPILER_OPTIMIZATION_SIZE=y
+CONFIG_FREERTOS_PLACE_FUNCTIONS_INTO_FLASH=y
+CONFIG_RINGBUF_PLACE_FUNCTIONS_INTO_FLASH=y
+# E-ink refresh evaluation at 10 Hz — the 33 ms LVGL default is meaningless on a
+# panel that takes >100 ms per partial update.
+CONFIG_LV_DEF_REFR_PERIOD=100
+# No PNG/JPEG assets in the Aqua Timer build; keep the draw cache small.
+CONFIG_LV_CACHE_DEF_SIZE=262144
+# Larger text sizes for the 540x960 portrait layout.
+CONFIG_LV_FONT_MONTSERRAT_48=y

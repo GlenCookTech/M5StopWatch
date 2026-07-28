@@ -9,7 +9,8 @@ on:
       - '*.*.*'
       - 'v*.*.*'
     branches:
-      - '*'
+      # '**' not '*': a single star does not match '/' in branch names
+      - '**'
     paths:
       - '*'
       - '**.ino'
@@ -32,10 +33,18 @@ on:
       - '**.clang-format'
   workflow_dispatch:
 
+# Only keep the newest run per branch/PR; cancel superseded ones to save minutes.
+concurrency:
+  group: clang-format-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   formatting-check:
     name: Formatting Check
-    runs-on: [self-hosted, Linux, X64]
+    # Upstream runs this on M5Stack's own runner fleet. This fork has no
+    # self-hosted runner, so the job sat queued forever and the check could
+    # never report — clang-format needs nothing a hosted runner lacks.
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         path:

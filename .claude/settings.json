@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(gh repo *)",
+      "Bash(gh pr create --repo GlenCookTech/M5StopWatch --base main --head feat/aqua-timer --title 'Add Aqua Timer app, CLAUDE.md, and CI build workflow' --body ' *)",
+      "Bash(gh pr *)",
+      "Bash(python3 -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/build.yml'\\)\\); print\\('valid YAML'\\)\")",
+      "Read(//tmp/**)",
+      "Bash(export GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0=*)",
+      "Bash(gh run *)",
+      "Bash(eim --version)",
+      "Bash(eim --help)",
+      "Bash(ls -la ~/.espressif/ ~/.espressif/eim 2>&1 | head -40)",
+      "Read(//home/codespace/.espressif/**)",
+      "Read(//home/codespace/.espressif/eim/**)",
+      "Bash(unzip -l eim-cli-linux-x64.zip)",
+      "Bash(rm -f eim.tmp)",
+      "Bash(unzip -o eim-cli-linux-x64.zip)",
+      "Bash(chmod +x eim)",
+      "Bash(./eim --version)",
+      "Bash(./eim --help)",
+      "Bash(./eim install *)",
+      "Bash(sudo apt-get update -qq)",
+      "Bash(sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq flex gperf ccache dfu-util libusb-1.0-0 bison cmake ninja-build libffi-dev libssl-dev python3-venv)",
+      "Bash(gh api *)",
+      "Bash(./setup-ubuntu.sh --help)",
+      "Bash(./setup-ubuntu.sh --bogus)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(grep -n \"esp_http_client_set_redirection\\\\|redirect\\\\|HttpStatus_MovedPermanently\\\\|client->redirect_counter\" /home/codespace/.espressif/v5.5.4/esp-idf/components/esp_http_client/esp_http_client.c | head -60)",
+      "Read(//home/codespace/.espressif/v5.5.4/esp-idf/components/esp_http_client/**)",
+      "Bash(clang-format -i --style=file main/hal/utils/net/http_get.cpp main/hal/utils/net/http_get.h)",
+      "Read(//home/codespace/.espressif/tools/**)",
+      "Read(//home/codespace/.espressif/tools/python/**)"
+    ]
+  }
+}

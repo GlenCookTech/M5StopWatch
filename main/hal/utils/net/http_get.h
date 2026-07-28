@@ -17,6 +17,10 @@ namespace net {
  * without pinning. The response is rejected before any body is read if the
  * status is not 2xx or the Content-Length exceeds maxBytes.
  *
+ * Redirects (301/302/303/307/308) are followed, up to five deep, so a base URL
+ * of http:// or github.com/... reaches its https / raw target rather than
+ * failing with the 3xx status.
+ *
  * @param url absolute http(s) URL
  * @param out response body on success
  * @param maxBytes hard cap; a larger response is an error, not a truncation

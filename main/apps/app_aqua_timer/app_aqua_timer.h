@@ -6,7 +6,12 @@
 #pragma once
 #include "model/config.h"
 #include "model/runner.h"
+// Same view API, two implementations: round AMOLED vs 540x960 e-ink
+#if BOARD_M5PAPER
+#include "view_epd/view.h"
+#else
 #include "view/view.h"
+#endif
 
 #include <apps/common/key_manager/key_manager.h>
 #include <mooncake.h>

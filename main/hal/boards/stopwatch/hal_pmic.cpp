@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "hal.h"
+#include <hal/hal.h>
 #include <mooncake_log.h>
 #include <M5PM1.h>
 #include <algorithm>

@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "hal.h"
-#include "utils/config_ap/config_ap.h"
+#include <hal/hal.h>
+#include <hal/utils/config_ap/config_ap.h>
 
 #include <assets/assets.h>
 #include <cerrno>

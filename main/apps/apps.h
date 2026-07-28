@@ -4,6 +4,9 @@
  * SPDX-License-Identifier: MIT
  */
 #pragma once
+// Aqua Timer is the only app shared by every board; the rest are StopWatch-only
+#include "app_aqua_timer/app_aqua_timer.h"
+#if !BOARD_M5PAPER
 #include "app_template/app_template.h"
 #include "app_launcher/app_launcher.h"
 #include "app_watch_face/app_watch_face.h"
@@ -14,4 +17,4 @@
 #include "app_badge/app_badge.h"
 #include "app_lucky_wheel/app_lucky_wheel.h"
 #include "apps/app_alarm_clock/app_alarm_clock.h"
-#include "app_aqua_timer/app_aqua_timer.h"
+#endif

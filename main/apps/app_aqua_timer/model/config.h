@@ -41,6 +41,10 @@ struct AquaConfig {
  * @brief Reject anything that is not a plain https URL, and strip a trailing
  * slash so urlFor() never produces a double separator.
  *
+ * A pasted GitHub web URL (github.com/OWNER/REPO/{tree,blob,raw}/REF/PATH) is
+ * rewritten to its raw.githubusercontent.com equivalent — the web form serves
+ * the HTML file viewer, which would otherwise blow the sync's size cap.
+ *
  * @return true if the URL was acceptable; `url` is normalised in place.
  */
 bool normalizeBaseUrl(std::string& url, std::string& error);

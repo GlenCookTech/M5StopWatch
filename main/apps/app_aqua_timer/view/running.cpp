@@ -63,7 +63,7 @@ uint32_t bg_color_for(const model::RoutineRunner& runner)
 std::string format_mmss(uint32_t seconds)
 {
     char buffer[16] = {};
-    snprintf(buffer, sizeof(buffer), "%u:%02u", seconds / 60, seconds % 60);
+    snprintf(buffer, sizeof(buffer), "%u:%02u", (unsigned)(seconds / 60), (unsigned)(seconds % 60));
     return std::string(buffer);
 }
 

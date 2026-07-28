@@ -36,6 +36,7 @@
 
 # Build files
 build/
+build.m5paper/
 cmake-build-*/
 /components/
 managed_components/
@@ -63,3 +64,5 @@ obj/
 
 sdkconfig
 sdkconfig.old
+sdkconfig.m5paper
+sdkconfig.m5paper.old
