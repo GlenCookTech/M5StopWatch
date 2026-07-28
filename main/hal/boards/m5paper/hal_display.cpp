@@ -188,8 +188,12 @@ void Hal::lvgl_init()
 
     lv_init();
 
+    if (!_display) {
+        mclog::tagError(_tag, "lvgl init skipped: display not initialised");
+        return;
+    }
+
     static lv_display_t* disp = lv_display_create(_display->width(), _display->height());
-    if (disp == NULL) {
         mclog::tagError(_tag, "lv_display_create failed");
         return;
     }
