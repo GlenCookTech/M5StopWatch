@@ -52,12 +52,25 @@ LGFX_Device& Hal::getDisplay()
 
 LGFX_Sprite& Hal::getCanvas()
 {
+    if (!_canvas) {
+        // Canvas is currently unused on M5Paper, but the HAL API exposes it.
+        // Allocate lazily if a caller requests it.
+        _canvas = std::make_unique<LGFX_Sprite>(_display.get());
+        _canvas->setPsram(true);
+        if (!_canvas->createSprite(_display->width(), _display->height())) {
+            mclog::tagError(_tag, "canvas init failed; falling back to 1x1");
+            _canvas = std::make_unique<LGFX_Sprite>(_display.get());
+            (void)_canvas->createSprite(1, 1);
+        }
+    }
     return *_canvas;
 }
 
 void Hal::updateCanvas()
 {
-    _canvas->pushSprite(0, 0);
+    if (_canvas) {
+        _canvas->pushSprite(0, 0);
+    }
 }
 
 void Hal::setBackLightBrightness(int brightness, bool saveToSettings)
