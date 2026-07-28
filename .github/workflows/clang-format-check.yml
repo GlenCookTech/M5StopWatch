@@ -9,7 +9,8 @@ on:
       - '*.*.*'
       - 'v*.*.*'
     branches:
-      - '*'
+      # '**' not '*': a single star does not match '/' in branch names
+      - '**'
     paths:
       - '*'
       - '**.ino'

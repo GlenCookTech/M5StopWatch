@@ -3,7 +3,9 @@ name: Build
 on:
   push:
     branches:
-      - '*'
+      # '**' not '*': a single star does not match '/' so slash-named branches
+      # (feat/x, claude/x) would never trigger on push
+      - '**'
     paths-ignore:
       - '**.md'
       - 'routines/**'
