@@ -8,17 +8,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Hardware: ESP32-S3, 16 MB flash, octal PSRAM @ 80 MHz. 480×480 round AMOLED (`CO5300`, QSPI) with a **466 px usable circle** — all UI containers are sized 466×466. Touch CST820, RTC RX8130, IMU BMI270+BMM150, PMIC M5PM1, IO expander M5IOE1, vibration motor, mic+speaker via `esp_codec_dev`, two physical buttons (btnA/btnB).
 
+## Boards
+
+Two build targets share this repo, keyed on `IDF_TARGET`:
+
+- **esp32s3 (default)** — the StopWatch wearable, all apps.
+- **esp32 — M5Paper v1.1** (4.7" 540×960 e-ink, IT8951 over SPI, GT911 touch, side wheel, **no speaker/buzzer/vibration**). Builds the **Aqua Timer only**: no launcher, `main.cpp` boots straight into the app and reopens it if closed. Cues are visual — interval type flips page polarity (Work/Power = inverted), and every timeline move triggers `requestEpdFullRefresh()` whose quality-mode flash is the cue *and* the ghosting cleaner. Sources split: `hal/boards/stopwatch/` vs `hal/boards/m5paper/`, `app_aqua_timer/view/` vs `view_epd/` (same class API, chosen in [main/CMakeLists.txt](main/CMakeLists.txt) + `#if BOARD_M5PAPER`). S3-only vendored components are excluded via `EXCLUDE_COMPONENTS` in the root CMakeLists; managed components use per-target `rules:` in the manifest. Per-target kconfig lives in `sdkconfig.defaults.esp32{,s3}` stacked on the shared `sdkconfig.defaults`.
+
 ## Commands
 
 ```bash
 python3 ./fetch_repos.py     # REQUIRED first — git-clones components/ from repos.json + applies patches/
-. $IDF_PATH/export.sh        # ESP-IDF v5.5.4 (exact version), target esp32s3
-idf.py build
+. $IDF_PATH/export.sh        # ESP-IDF v5.5.4 (exact version)
+idf.py build                 # StopWatch (esp32s3, default)
 idf.py flash monitor         # device-only; logs via idf.py monitor
+
+# M5Paper: own build dir + own sdkconfig so the two targets never fight over ./sdkconfig
+idf.py -B build.m5paper -DIDF_TARGET=esp32 -DSDKCONFIG=sdkconfig.m5paper build
+idf.py -B build.m5paper -DSDKCONFIG=sdkconfig.m5paper flash monitor
 ```
 
 - **Adding a new source file** under `apps/`, `assets/`, or `hal/` is auto-registered by the recursive globs in [main/CMakeLists.txt](main/CMakeLists.txt) — but CMake must reconfigure to pick it up (editing any `CMakeLists.txt`, or `idf.py fullclean`, forces this). Embedded assets (HTML/binary) are **not** globbed; add them to `EMBED_TXTFILES`/`EMBED_FILES` explicitly.
-- **No test suite, no host/simulator build, no CI build job.** Verification is on-device via `mclog::tagInfo`/monitor. The only CI is a clang-format check. Pure-logic modules can be exercised with a host `g++ -std=c++17` harness against STL-only code (this is how the aqua-timer parser/runner were validated).
+- **No test suite, no host/simulator build.** Verification is on-device via `mclog::tagInfo`/monitor. CI builds both targets (matrix in `.github/workflows/build.yml`) and runs a clang-format check. Pure-logic modules can be exercised with a host `g++ -std=c++17` harness against STL-only code (this is how the aqua-timer parser/runner were validated).
 - **Formatting is enforced.** CI runs **clang-format 22** (`.clang-format`, Google-based, 120 col) over everything except `assets/` and `hal/drivers/`. Run `clang-format -i --style=file <files>` before committing or CI fails. `pip install clang-format` gives the right version.
 
 ## Dependencies

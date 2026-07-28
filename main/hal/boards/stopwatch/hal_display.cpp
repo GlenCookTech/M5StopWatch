@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "hal.h"
-#include "utils/settings/settings.h"
+#include <hal/hal.h>
+#include <hal/utils/settings/settings.h>
 #include <mooncake_log.h>
 #include <M5GFX.h>
 #include <lgfx/v1/panel/Panel_AMOLED.hpp>
@@ -227,7 +227,7 @@ int Hal::getBackLightBrightness(bool loadFromSettings)
 /* -------------------------------------------------------------------------- */
 /*                                  Touchpad                                  */
 /* -------------------------------------------------------------------------- */
-#include "drivers/cst820/cst820.h"
+#include <hal/drivers/cst820/cst820.h>
 
 static std::unique_ptr<Cst820> _cst820;
 
@@ -406,4 +406,9 @@ void Hal::startLvglUpdate()
 void Hal::stopLvglUpdate()
 {
     _lvgl_update_enabled = false;
+}
+
+void Hal::requestEpdFullRefresh()
+{
+    // AMOLED: nothing to refresh, cue feedback comes from audio/vibration
 }

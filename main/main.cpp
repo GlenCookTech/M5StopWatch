@@ -9,8 +9,10 @@
 #include <mooncake.h>
 #include <apps/apps.h>
 #include <hal/hal.h>
+#if !BOARD_M5PAPER
 #include <lv_demos.h>
 #include <apps/common/audio/audio.h>
+#endif
 
 using namespace mooncake;
 using namespace smooth_ui_toolkit;
@@ -28,6 +30,20 @@ extern "C" void app_main(void)
     ui_hal::on_delay([](uint32_t ms) { GetHAL().delay(ms); });
     ui_hal::on_get_tick([]() { return GetHAL().millis(); });
 
+#if BOARD_M5PAPER
+    // Single-app board: no launcher, boot straight into the Aqua Timer and
+    // reopen it whenever it closes (the GoHome path becomes "reset the app")
+    const int aqua_timer_id = GetMooncake().installApp(std::make_unique<AppAquaTimer>());
+    GetMooncake().openApp(aqua_timer_id);
+
+    while (1) {
+        GetHAL().feedTheDog();
+        GetMooncake().update();
+        if (GetMooncake().getAppCurrentState(aqua_timer_id) == AppAbility::StateSleeping) {
+            GetMooncake().openApp(aqua_timer_id);
+        }
+    }
+#else
     // Install apps
     GetMooncake().installApp(std::make_unique<AppLauncher>());
     GetMooncake().installApp(std::make_unique<AppAlarmClock>());
@@ -46,4 +62,5 @@ extern "C" void app_main(void)
         GetHAL().feedTheDog();
         GetMooncake().update();
     }
+#endif
 }

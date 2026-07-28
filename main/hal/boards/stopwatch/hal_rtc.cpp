@@ -3,9 +3,9 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "hal.h"
-#include "utils/settings/settings.h"
-#include "drivers/rx8130/rx8130.h"
+#include <hal/hal.h>
+#include <hal/utils/settings/settings.h>
+#include <hal/drivers/rx8130/rx8130.h>
 #include <mooncake_log.h>
 #include <memory>
 #include <sys/time.h>

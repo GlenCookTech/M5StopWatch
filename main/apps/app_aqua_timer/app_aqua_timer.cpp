@@ -58,6 +58,16 @@ void AppAquaTimer::onRunning()
         } else if (event == input::KeyEvent::GoNext) {
             _runner->next();
         }
+#if BOARD_M5PAPER
+        // M5Paper wheel: center press toggles pause, 2 s hold ends the class
+        // (the board has no A+B chord — the wheel is one physical control).
+        if (GetHAL().btnPwr.wasHold()) {
+            _pending_page        = Page::Menu;
+            _page_change_pending = true;
+        } else if (GetHAL().btnPwr.wasClicked()) {
+            _runner->togglePause();
+        }
+#endif
     }
 
     {

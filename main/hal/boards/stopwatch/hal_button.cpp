@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "hal.h"
-#include "utils/settings/settings.h"
+#include <hal/hal.h>
+#include <hal/utils/settings/settings.h>
 #include <apps/common/audio/audio.h>
 #include <mooncake_log.h>
 #include <driver/gpio.h>

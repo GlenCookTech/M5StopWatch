@@ -176,6 +176,14 @@ public:
     void startLvglUpdate();
     void stopLvglUpdate();
 
+    /**
+     * @brief Ask the display to do a full quality refresh on its next cycle.
+     *
+     * E-ink boards use this to clear ghosting; the inherent black/white flash
+     * doubles as an attention cue. No-op on emissive displays.
+     */
+    void requestEpdFullRefresh();
+
     /* ---------------------------------- Touch --------------------------------- */
     struct TouchPoint {
         int num = 0;
@@ -270,6 +278,7 @@ private:
     int _bl_brightness = 80;
     int _spk_volume    = 80;
 
+    void nvs_init();
     void i2c_init();
     void i2c_detect();
     void pmic_init();

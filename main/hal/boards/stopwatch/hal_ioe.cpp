@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "hal.h"
+#include <hal/hal.h>
 #include <mooncake_log.h>
 #include <driver/gpio.h>
 #include <M5IOE1.h>
