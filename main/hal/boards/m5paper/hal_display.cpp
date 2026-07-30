@@ -194,6 +194,7 @@ void Hal::lvgl_init()
     }
 
     static lv_display_t* disp = lv_display_create(_display->width(), _display->height());
+    if (disp == NULL) {
         mclog::tagError(_tag, "lv_display_create failed");
         return;
     }
